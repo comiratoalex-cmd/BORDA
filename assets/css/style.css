@@ -1,0 +1,92 @@
+﻿*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+background:#0b0b14;
+color:white;
+font-family:'Segoe UI',sans-serif;
+display:flex;
+height:100vh;
+overflow:hidden;
+}
+
+.sidebar{
+width:340px;
+padding:20px;
+background:rgba(20,20,35,.8);
+border-right:1px solid rgba(255,255,255,.12);
+overflow:auto;
+}
+
+.group{margin-bottom:18px}
+.group label{display:block;margin-bottom:6px;opacity:.8}
+.group input,.group select{
+width:100%;
+padding:8px;
+background:#12121c;
+border:none;
+border-radius:6px;
+color:white;
+}
+
+.preview{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+}
+
+/* ==============================
+   BARRA PRO – FINAL
+============================== */
+
+.border-box{
+--c1:#ffb3c6;
+--c2:#ff8fab;
+--c3:#bde0fe;
+--c4:#a2d2ff;
+--speed:8s;
+--borderW:6px;
+--angle:0deg;
+--glow:rgba(255,200,220,0.9);
+
+width:100%;
+height:14px;
+position:relative;
+}
+
+.border-box::before{
+content:"";
+position:absolute;
+inset:0;
+padding:var(--borderW);
+
+background:
+conic-gradient(
+from var(--angle),
+var(--c1),
+var(--c2),
+var(--c3),
+var(--c4),
+var(--c1)
+);
+
+-webkit-mask:
+linear-gradient(#000 0 0) content-box,
+linear-gradient(#000 0 0);
+-webkit-mask-composite:xor;
+mask-composite:exclude;
+
+animation:spin var(--speed) linear infinite;
+
+filter:
+drop-shadow(0 0 18px var(--glow))
+drop-shadow(0 0 30px var(--glow));
+}
+
+@keyframes spin{
+to{--angle:360deg}
+}
+
+/* Overlay-only */
+.overlay-only .sidebar{display:none}

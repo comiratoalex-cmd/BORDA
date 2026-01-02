@@ -1,162 +1,59 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pastel Border Generator</title>
-
-<style>
-    body {
-        background: #111;
-        color: white;
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 20px;
-        display: flex;
-        gap: 20px;
-    }
-
-    .controls {
-        width: 320px;
-        padding: 20px;
-        background: #1a1a1a;
-        border-radius: 10px;
-    }
-
-    .preview {
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    #box {
-        box-sizing: border-box;
-        border-style: solid;
-        border-image-slice: 1;
-        animation: gradientMove var(--duration) linear infinite;
-
-        /* PRESET PASTEL */
-        border-image-source: linear-gradient(
-            90deg,
-            #ffcedd,
-            #f6b7ff,
-            #d5c8ff,
-            #bcd9ff,
-            #aaf5ff,
-            #d3ffe3,
-            #ffecc2,
-            #ffd6c7
-        );
-    }
-
-    @keyframes gradientMove {
-        0% {
-            border-image-source: linear-gradient(
-                90deg,
-                #ffcedd,
-                #f6b7ff,
-                #d5c8ff,
-                #bcd9ff,
-                #aaf5ff,
-                #d3ffe3,
-                #ffecc2,
-                #ffd6c7
-            );
-        }
-        100% {
-            border-image-source: linear-gradient(
-                450deg,
-                #ffcedd,
-                #f6b7ff,
-                #d5c8ff,
-                #bcd9ff,
-                #aaf5ff,
-                #d3ffe3,
-                #ffecc2,
-                #ffd6c7
-            );
-        }
-    }
-
-    input {
-        width: 100%;
-        margin: 8px 0 20px 0;
-    }
-</style>
+<title>Border Generator – Barra PRO</title>
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
-
 <body>
 
-<div class="controls">
-    <h2>Pastel Border Generator</h2>
+<div class="sidebar" id="ui">
+  <h2>Border Generator – Barra PRO</h2>
 
-    <label>Width</label>
-    <input type="number" id="width" value="500">
+  <div class="group">
+    <label>Velocidade (rotação)</label>
+    <input type="range" id="speed" min="4" max="20" value="8">
+  </div>
 
-    <label>Height</label>
-    <input type="number" id="height" value="900">
+  <div class="group">
+    <label>Espessura</label>
+    <input type="range" id="borderW" min="3" max="14" value="6">
+  </div>
 
-    <label>Border Width</label>
-    <input type="number" id="borderWidth" value="10">
+  <div class="group">
+    <label>Modo de Cores</label>
+    <select id="mode">
+      <option value="themes">Temas (JSON)</option>
+      <option value="manual">Manual (C1–C4)</option>
+      <option value="hue">Pastel + Hue Shift</option>
+    </select>
+  </div>
 
-    <label>Border Radius</label>
-    <input type="number" id="borderRadius" value="8">
+  <div class="group" id="themeBox">
+    <label>Tema</label>
+    <select id="theme"></select>
+  </div>
 
-    <label>Animation Duration (s)</label>
-    <input type="number" id="duration" value="2.8">
+  <div id="manualBox" style="display:none;">
+    <div class="group"><label>Cor 1</label><input type="color" id="c1"></div>
+    <div class="group"><label>Cor 2</label><input type="color" id="c2"></div>
+    <div class="group"><label>Cor 3</label><input type="color" id="c3"></div>
+    <div class="group"><label>Cor 4</label><input type="color" id="c4"></div>
+  </div>
 
-    <button onclick="updateURL()" style="padding:10px;width:100%;margin-top:10px;">
-        Atualizar Link
-    </button>
+  <div id="hueBox" class="group" style="display:none;">
+    <label>Hue Shift</label>
+    <input type="range" id="hue" min="0" max="360" value="0">
+  </div>
 
-    <p style="margin-top:20px;">URL gerada:</p>
-    <textarea id="finalURL" style="width:100%;height:120px;"></textarea>
+  <button id="exportBtn">🔗 Gerar Link OBS</button>
+  <p id="resultLink"></p>
 </div>
 
 <div class="preview">
-    <div id="box"></div>
+  <div id="box" class="border-box"></div>
 </div>
 
-<script>
-    function applySettings() {
-        const el = document.getElementById("box");
-
-        el.style.width = document.getElementById("width").value + "px";
-        el.style.height = document.getElementById("height").value + "px";
-        el.style.borderWidth = document.getElementById("borderWidth").value + "px";
-        el.style.borderRadius = document.getElementById("borderRadius").value + "px";
-        el.style.setProperty('--duration', document.getElementById("duration").value + "s");
-    }
-
-    function updateURL() {
-        const params = new URLSearchParams({
-            width: width.value,
-            height: height.value,
-            borderWidth: borderWidth.value,
-            borderRadius: borderRadius.value,
-            duration: duration.value
-        });
-
-        const final = window.location.origin + window.location.pathname + "?" + params.toString();
-        document.getElementById("finalURL").value = final;
-
-        applySettings();
-    }
-
-    function loadParamsOnStart() {
-        const params = new URL(window.location.href).searchParams;
-
-        for (const key of params.keys()) {
-            document.getElementById(key).value = params.get(key);
-        }
-
-        applySettings();
-    }
-
-    loadParamsOnStart();
-    document.querySelectorAll("input").forEach(i => i.addEventListener("input", applySettings));
-</script>
-
+<script src="assets/js/app.js"></script>
 </body>
 </html>
